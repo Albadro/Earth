@@ -29,16 +29,20 @@
     --net-slope: 70deg;
     --stand-slope: -90deg;
 
+    /* consts for realistic view calc */
+    --KEm: calc(1 / 6367.5 * var(--earth-w)); /*the value of 1km in the screen*/
+    --DMs: 200ms; /*the value of 1 day in ms */
+
     /* `--object-w` = object Width */
-    --earth-w: 50em;
-    --moon-w: 0.6em;
+    --earth-w: 1em;
+    --moon-w: calc(1740 * var(--KEm));
 
     /* `--object-ow` = object Orbit Width */
-    --moon-ow: 4em;
+    --moon-ow: calc(384400 * var(--KEm));
 
     /* `--object-od` = object Orbit Duration */
 
-    --moon-od: 2950ms;
+    --moon-od: calc(27.321661 * var(--DMs));
 }
 body,
 html {
@@ -179,7 +183,7 @@ main {
 .orbit {
     /* drawing orbits */
     border-radius: 50%;
-    border: solid #4e5961 calc(1em / 16);
+    border: solid #4e5961 0.1px;
 }
 .orbitor {
     /* rotating what is inside `.orbit`*/
