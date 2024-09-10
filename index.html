@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Earth and what is around it</title>
+        <link rel="stylesheet" href="style/main.css" />
+    </head>
+    <body>
+        <header>
+            <div class="day-counter">day: <span id="currentDay">0</span></div>
+            <label for="switch" class="d-switch" id="DswitchBox">
+                <span>3D</span>
+                <input type="checkbox" id="Dswitch" />
+                <label class="r" for="Dswitch"></label>
+                <span>2D</span>
+            </label>
+        </header>
+        <main>
+            <!-- the multy nesting is to maintain the animations and prevent `transform` property overriding -->
+            <div class="net" id="net">
+                <!-- Earth -->
+                <div class="object-box earth">
+                    <div class="stand earth">
+                        <div id="earth" class="object"></div>
+                    </div>
+                </div>
+
+                <!-- Moon -->
+                <div class="object-box orbit moon">
+                    <div class="orbitor">
+                        <div class="orbited">
+                            <div class="stand">
+                                <div id="moon" class="object"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <!-- script -->
+        <script src="script/ui.js"></script>
+    </body>
+</html>

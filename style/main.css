@@ -1,0 +1,241 @@
+/* ever nesiting level (child or parent) have a reason to exist, and if you wounder if there is any nesting in the html structure that might seem to be useless, it is to maintain `transform`, prevent its overriding and avoind repeating its functions!  */
+
+/*  */
+/* animation */
+/*  */
+@keyframes orbit {
+    /* rotate around */
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+@keyframes facing {
+    /*object stay facing while orbitting */
+    0% {
+        transform: rotateY(0deg);
+    }
+    100% {
+        transform: rotateY(360deg);
+    }
+}
+
+/*  */
+/*  */
+
+:root {
+    --net-slope: 70deg;
+    --stand-slope: -90deg;
+
+    /* `--object-w` = object Width */
+    --earth-w: 50em;
+    --moon-w: 0.6em;
+
+    /* `--object-ow` = object Orbit Width */
+    --moon-ow: 4em;
+
+    /* `--object-od` = object Orbit Duration */
+
+    --moon-od: 2950ms;
+}
+body,
+html {
+    height: 100%;
+    overflow: hidden !important;
+}
+body {
+    background-image: url(../imgs/bg.png);
+    color: white;
+}
+html,
+body,
+body > *,
+body > *::after,
+body > *::before {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    border: none;
+    outline: none;
+}
+
+/*  */
+/*  */
+/* header */
+/*  */
+/*  */
+
+header {
+    width: 100%;
+    height: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-inline: 1em;
+    text-transform: capitalize;
+    font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+}
+/* day conter */
+header > .day-counter {
+    letter-spacing: 1px;
+    & > span {
+        display: inline-block;
+        transform: translateY(0.085em);
+    }
+}
+/* 2d switch */
+label.d-switch {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    z-index: 1000;
+}
+input[type="checkbox"] {
+    height: 0;
+    width: 0;
+    visibility: hidden;
+    margin: 0;
+}
+label.r {
+    display: block;
+    position: relative;
+    width: 1.2em;
+    height: 1em;
+    margin-inline: 0.4em;
+}
+label.r:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: calc(100% - 13px);
+    transform: translateY(-50%);
+    width: 13px;
+    height: 13px;
+    background: #fff;
+    border-radius: 10%;
+    transition-property: right, box-shadow, transform;
+    transition-duration: 0.3s;
+    box-shadow: 1px 2.5px hsl(0, 0%, 45%);
+    cursor: pointer;
+}
+input:checked + label.r:after {
+    right: 0;
+    transform: translateY(calc(-50% + 1px));
+    box-shadow: none;
+}
+.net,
+.stand {
+    transition: transform 2000ms;
+}
+.net.d2 {
+    --net-slope: 0deg;
+    --stand-slope: 0deg;
+    & .object {
+        animation: none;
+    }
+}
+.net.freeze * {
+    animation: none;
+}
+
+/*  */
+/*  */
+/* Main */
+/*  */
+/*  */
+main {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.net,
+.object-box,
+.sub-object,
+.orbitor,
+.orbited,
+.stand {
+    /* preserving 3D mode over layers */
+    transform-style: preserve-3d;
+}
+/* the .object-box element has both the classes `orbit` & `[planetname]` */
+.net {
+    /* the virtual net that caries the objects */
+    position: relative;
+    transform: rotateX(var(--net-slope));
+    font-size: var(--net-scale); /* the scaling of the whole thing */
+}
+.object-box {
+    /* centerlizing every object */
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+.orbit {
+    /* drawing orbits */
+    border-radius: 50%;
+    border: solid #4e5961 calc(1em / 16);
+}
+.orbitor {
+    /* rotating what is inside `.orbit`*/
+    width: 100%;
+    height: 100%;
+    animation: orbit var(--od) linear infinite;
+    animation-fill-mode: none;
+    display: flex;
+    align-items: center;
+}
+.orbited {
+    /* making the orbit line in the middle of the object */
+    transform: translateX(-50%);
+}
+.stand {
+    /* standing the object up  */
+    transform: rotateX(var(--stand-slope));
+    height: min-content;
+}
+.object {
+    border-radius: 50%;
+}
+.orbited .object {
+    /* keep the object facing while orbitting */
+    animation: facing var(--od) linear infinite;
+    animation-fill-mode: none;
+}
+
+/*  */
+/* objects */
+/*  */
+
+/* Earth */
+.earth.orbit {
+    --od: var(--earth-od);
+    width: var(--earth-ow);
+    height: var(--earth-ow);
+}
+#earth {
+    width: var(--earth-w);
+    height: var(--earth-w);
+    /* background-color: blue; */
+    background-image: url(../imgs/earth.png);
+    background-size: contain;
+}
+
+/* Moon */
+.moon.orbit {
+    --od: var(--moon-od);
+    width: var(--moon-ow);
+    height: var(--moon-ow);
+}
+#moon {
+    width: var(--moon-w);
+    height: var(--moon-w);
+    background-image: url(../imgs/moon.png);
+    background-size: 125%;
+    background-position: 50% 55%;
+}
