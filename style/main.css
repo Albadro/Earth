@@ -28,17 +28,20 @@
 :root {
     --net-slope: 70deg;
     --stand-slope: -90deg;
+    --Cstand-slope: -70deg; /*for central object*/
 
     /* consts for realistic view calc */
     --KEm: calc(1 / 6367.5 * var(--earth-w)); /*the value of 1km in the screen*/
     --DMs: 200ms; /*the value of 1 day in ms */
 
     /* `--object-w` = object Width */
-    --earth-w: 1em;
+    --earth-w: 7em;
     --moon-w: calc(1740 * var(--KEm));
+    --moon-w: 2em;
 
     /* `--object-ow` = object Orbit Width */
     --moon-ow: calc(384400 * var(--KEm));
+    --moon-ow: 30em;
 
     /* `--object-od` = object Orbit Duration */
 
@@ -122,7 +125,7 @@ label.r:after {
     border-radius: 10%;
     transition-property: right, box-shadow, transform;
     transition-duration: 0.3s;
-    box-shadow: 1px 2.5px hsl(0, 0%, 45%);
+    box-shadow: 1.5px 2.5px #737373, 0.1px 2.5px #737373, 1.5px 0.2px #737373;
     cursor: pointer;
 }
 input:checked + label.r:after {
@@ -137,13 +140,11 @@ input:checked + label.r:after {
 .net.d2 {
     --net-slope: 0deg;
     --stand-slope: 0deg;
-    & .object {
-        animation: none;
-    }
+    --Cstand-slope: 0deg;
 }
-.net.freeze * {
+/* .net.freeze * {
     animation: none;
-}
+} */
 
 /*  */
 /*  */
@@ -166,7 +167,7 @@ main {
     /* preserving 3D mode over layers */
     transform-style: preserve-3d;
 }
-/* the .object-box element has both the classes `orbit` & `[planetname]` */
+/* the .object-box element has both the classes `orbit` & `[planetname]` and centeral object-box has `center`*/
 .net {
     /* the virtual net that caries the objects */
     position: relative;
@@ -179,6 +180,9 @@ main {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+}
+.center {
+    --stand-slope: var(--Cstand-slope);
 }
 .orbit {
     /* drawing orbits */

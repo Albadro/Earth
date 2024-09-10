@@ -3,6 +3,7 @@ const DaySpan = document.getElementById("currentDay");
 const net = document.getElementById("net");
 const Dswitch = document.getElementById("Dswitch"); // view Dimentions switch
 const DswitchBox = document.getElementById("DswitchBox");
+const OOBs = document.querySelectorAll(".object-box:not(.center)"); // Orbitting Object Boxes
 
 // vars
 let dayDur = 100; // day duration in milli seconds
@@ -26,16 +27,33 @@ function to2d(checkbox) {
         DswitchClickable = false;
         if (checkbox.checked) {
             net.classList.add("d2");
+            OOBs.forEach((objectBox) => {
+                const facingAni = objectBox
+                    .querySelector(".object")
+                    .getAnimations()[0];
+                facingAni.playbackRate = -1;
+                facingAni.pause();
+                facingAni.currentTime =
+                    facingAni.effect.getComputedTiming().duration;
+            });
         } else {
             net.classList.remove("d2");
+            OOBs.forEach((objectBox) => {
+                const orbitAni = objectBox
+                    .querySelector(".orbitor")
+                    .getAnimations()[0];
+                const facingAni = objectBox
+                    .querySelector(".object")
+                    .getAnimations()[0];
+                facingAni.playbackRate = 1;
+                facingAni.currentTime = orbitAni.currentTime;
+                facingAni.play();
+            });
         }
-        net.classList.add("freeze");
+
         setTimeout(() => {
-            net.classList.remove("freeze");
-            currentDay = 0;
-            displayDay();
             DswitchClickable = true;
-        }, 1);
+        }, 300);
     }
 }
 
