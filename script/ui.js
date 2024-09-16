@@ -6,7 +6,7 @@ const DswitchBox = document.getElementById("DswitchBox");
 const OOBs = document.querySelectorAll(".object-box:not(.center)"); // Orbitting Object Boxes
 
 // vars
-let dayDur = 500; // day duration in milli seconds
+let dayDur = 800; // day duration in milli seconds
 let currentDay = 0;
 let DswitchClickable = true;
 let ows = [100];
@@ -25,6 +25,23 @@ const moon = {
 Dswitch.addEventListener("change", (event) => {
     to2d(event.target);
 });
+
+// for interactions
+console.error(
+    "// there is a delay before applying the interactions, adjust it"
+);
+setTimeout(() => {
+    const objects = document.querySelectorAll(".object:not(#earth)");
+    objects.forEach((object) => {
+        object.addEventListener("mouseover", (event) => {
+            objectHov(event.target);
+        });
+        object.addEventListener("mouseout", (event) => {
+            objectUnhov(event.target);
+        });
+    });
+    console.log("Programm Started");
+}, 3000);
 
 // functions
 function displayDay() {
@@ -115,7 +132,7 @@ function addObject(object) {
 
 function randOW() {
     // returns an orbit width for new objects
-    if (ows.length > 30) {
+    if (ows.length > 19) {
         // checks if there is space for a new orbit
         console.error("Too many objects to create");
         return;
@@ -127,7 +144,7 @@ function randOW() {
         val = Math.floor(Math.random() * 61) + 20;
         for (let ow of ows) {
             // ensure that the orbit is away from other orbits
-            if (Math.abs(val - ow) <= 2) {
+            if (Math.abs(val - ow) <= 4) {
                 // the range
                 valid = false;
                 break;
@@ -140,6 +157,16 @@ function randOW() {
     }
 }
 
+function objectHov(object) {
+    const box = object.closest(".object-box");
+    box.classList.add("hov");
+    box.style.setProperty("--content", `"${object.id}"`);
+    //
+}
+function objectUnhov(object) {
+    object.closest(".object-box").classList.remove("hov");
+}
+
 //code
 
 setInterval(displayDay, dayDur);
@@ -147,7 +174,7 @@ setTimeout(() => {
     for (let i = 0; i < 11; i++) {
         setTimeout(() => {
             addObject(moon);
-        }, 500 * i);
+        }, 1000 * i);
     }
 }, 1000);
 
