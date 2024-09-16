@@ -32,20 +32,7 @@
 
     /* consts for realistic view calc */
     --KEm: calc(1 / 6367.5 * var(--earth-w)); /*the value of 1km in the screen*/
-    --DMs: 200ms; /*the value of 1 day in ms */
-
-    /* `--object-w` = object Width */
-    --earth-w: 7em;
-    --moon-w: calc(1740 * var(--KEm));
-    --moon-w: 2em;
-
-    /* `--object-ow` = object Orbit Width */
-    --moon-ow: calc(384400 * var(--KEm));
-    --moon-ow: 30em;
-
-    /* `--object-od` = object Orbit Duration */
-
-    --moon-od: calc(27.321661 * var(--DMs));
+    --w-earth: 7em;
 }
 body,
 html {
@@ -160,7 +147,6 @@ main {
 }
 .net,
 .object-box,
-.sub-object,
 .orbitor,
 .orbited,
 .stand {
@@ -214,6 +200,7 @@ main {
     /* keep the object facing while orbitting */
     animation: facing var(--od) linear infinite;
     animation-fill-mode: none;
+    background-color: grey;
 }
 
 /*  */
@@ -227,23 +214,8 @@ main {
     height: var(--earth-ow);
 }
 #earth {
-    width: var(--earth-w);
-    height: var(--earth-w);
-    /* background-color: blue; */
+    width: var(--w-earth);
+    height: var(--w-earth);
     background-image: url(../imgs/earth.png);
     background-size: contain;
-}
-
-/* Moon */
-.moon.orbit {
-    --od: var(--moon-od);
-    width: var(--moon-ow);
-    height: var(--moon-ow);
-}
-#moon {
-    width: var(--moon-w);
-    height: var(--moon-w);
-    background-image: url(../imgs/moon.png);
-    background-size: 125%;
-    background-position: 50% 55%;
 }
