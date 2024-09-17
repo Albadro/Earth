@@ -3,7 +3,6 @@ const DaySpan = document.getElementById("currentDay");
 const net = document.getElementById("net");
 const Dswitch = document.getElementById("Dswitch"); // view Dimentions switch
 const DswitchBox = document.getElementById("DswitchBox");
-const OOBs = document.querySelectorAll(".object-box:not(.center)"); // Orbitting Object Boxes
 const infoBox = document.getElementById("info");
 const main = document.getElementById("main");
 
@@ -23,27 +22,17 @@ const moon = {
 };
 
 // event Listeners
-
-Dswitch.addEventListener("change", (event) => {
-    to2d(event.target);
-});
 net.addEventListener("mouseover", (event) => {
     // for hovering orbiting objects
     const trgt = event.target;
-    if (
-        trgt.classList.contains("object") &&
-        !trgt.classList.contains("center")
-    ) {
+    if (trgt.classList.contains("object") && trgt.id != "earth") {
         objectHov(trgt);
     }
 });
 net.addEventListener("mouseout", (event) => {
     // for unhovering orbiting objects
     const trgt = event.target;
-    if (
-        trgt.classList.contains("object") &&
-        !trgt.classList.contains("center")
-    ) {
+    if (trgt.classList.contains("object") && trgt.id != "earth") {
         objectUnhov(trgt);
     }
 });
@@ -65,47 +54,12 @@ function displayDay() {
     DaySpan.innerText = currentDay;
 }
 
-function to2d(checkbox) {
-    if (DswitchClickable) {
-        DswitchClickable = false;
-        if (checkbox.checked) {
-            net.classList.add("d2");
-            OOBs.forEach((objectBox) => {
-                const facingAni = objectBox
-                    .querySelector(".object")
-                    .getAnimations()[0];
-                facingAni.playbackRate = -1;
-                facingAni.pause();
-                facingAni.currentTime =
-                    facingAni.effect.getComputedTiming().duration;
-            });
-        } else {
-            net.classList.remove("d2");
-            OOBs.forEach((objectBox) => {
-                const orbitAni = objectBox
-                    .querySelector(".orbitor")
-                    .getAnimations()[0];
-                const facingAni = objectBox
-                    .querySelector(".object")
-                    .getAnimations()[0];
-                facingAni.playbackRate = 1;
-                facingAni.currentTime = orbitAni.currentTime;
-                facingAni.play();
-            });
-        }
-
-        setTimeout(() => {
-            DswitchClickable = true;
-        }, 300);
-    }
-}
-
 function addObject(object) {
     const ow = randOW();
-    object.name = object.name + ow;
+    objectName = object.name + ow;
     // Create the objectBox div
     const objectBox = document.createElement("div");
-    objectBox.className = `object-box orbit ${object.name}`;
+    objectBox.className = `object-box orbit ${objectName}`;
     // Create the orbitor div
     const orbitor = document.createElement("div");
     orbitor.className = "orbitor";
@@ -117,7 +71,7 @@ function addObject(object) {
     stand.className = "stand";
     // Create the object div
     const objectDiv = document.createElement("div");
-    objectDiv.id = object.name;
+    objectDiv.id = objectName;
     objectDiv.className = "object";
     // Append the elements in the correct order
     net.appendChild(objectBox);
@@ -129,12 +83,12 @@ function addObject(object) {
     const style = document.createElement("style");
 
     const rules = `
-        .${object.name}.orbit {
+        .${objectName}.orbit {
             --od: ${object.od * dayDur}ms;
             width: ${ow}em;
             height: ${ow}em;
         }
-        #${object.name} {
+        #${objectName} {
             width: ${object.w};
             height: ${object.w};
             background-image: url(${object.imgPath});
@@ -196,11 +150,13 @@ function objectClick(object) {
 window.onload = function () {
     //code starrts here
     setInterval(displayDay, dayDur);
+    const x = 7;
+    let per = x * 100;
     setTimeout(() => {
-        for (let i = 0; i < 7; i++) {
+        for (let i = 0; i < x; i++) {
             setTimeout(() => {
                 addObject(moon);
-            }, 100 * i);
+            }, per);
         }
     }, 1000);
 };
