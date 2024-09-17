@@ -279,3 +279,14 @@ main {
     background-image: url(../imgs/earth.png);
     background-size: contain;
 }
+
+/*  */
+/* footer */
+/*  */
+footer {
+    width: 100%;
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    padding: 0.51em;
+}
