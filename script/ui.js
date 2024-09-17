@@ -4,9 +4,11 @@ const net = document.getElementById("net");
 const Dswitch = document.getElementById("Dswitch"); // view Dimentions switch
 const DswitchBox = document.getElementById("DswitchBox");
 const OOBs = document.querySelectorAll(".object-box:not(.center)"); // Orbitting Object Boxes
+const infoBox = document.getElementById("info");
+const main = document.getElementById("main");
 
 // vars
-let dayDur = 800; // day duration in milli seconds
+let dayDur = 1111; // day duration in milli seconds
 let currentDay = 0;
 let DswitchClickable = true;
 let ows = [100];
@@ -25,23 +27,37 @@ const moon = {
 Dswitch.addEventListener("change", (event) => {
     to2d(event.target);
 });
+net.addEventListener("mouseover", (event) => {
+    // for hovering orbiting objects
+    const trgt = event.target;
+    if (
+        trgt.classList.contains("object") &&
+        !trgt.classList.contains("center")
+    ) {
+        objectHov(trgt);
+    }
+});
+net.addEventListener("mouseout", (event) => {
+    // for unhovering orbiting objects
+    const trgt = event.target;
+    if (
+        trgt.classList.contains("object") &&
+        !trgt.classList.contains("center")
+    ) {
+        objectUnhov(trgt);
+    }
+});
 
-// for interactions
-console.error(
-    "// there is a delay before applying the interactions, adjust it"
-);
-setTimeout(() => {
-    const objects = document.querySelectorAll(".object:not(#earth)");
-    objects.forEach((object) => {
-        object.addEventListener("mouseover", (event) => {
-            objectHov(event.target);
-        });
-        object.addEventListener("mouseout", (event) => {
-            objectUnhov(event.target);
-        });
-    });
-    console.log("Programm Started");
-}, 3000);
+net.addEventListener("click", (event) => {
+    // for unhovering orbiting objects
+    const trgt = event.target;
+    if (
+        trgt.classList.contains("object") &&
+        !trgt.classList.contains("center")
+    ) {
+        objectClick(trgt);
+    }
+});
 
 // functions
 function displayDay() {
@@ -104,11 +120,11 @@ function addObject(object) {
     objectDiv.id = object.name;
     objectDiv.className = "object";
     // Append the elements in the correct order
-    stand.appendChild(objectDiv);
-    orbited.appendChild(stand);
-    orbitor.appendChild(orbited);
-    objectBox.appendChild(orbitor);
     net.appendChild(objectBox);
+    objectBox.appendChild(orbitor);
+    orbitor.appendChild(orbited);
+    orbited.appendChild(stand);
+    stand.appendChild(objectDiv);
 
     const style = document.createElement("style");
 
@@ -167,16 +183,24 @@ function objectUnhov(object) {
     object.closest(".object-box").classList.remove("hov");
 }
 
+function objectClick(object) {
+    // the parameter gotta be used to pass info of the specific object
+    infoBox.classList.toggle("show");
+    main.classList.toggle("info");
+    console.log(main.classList);
+    console.log(infoBox.classList);
+}
+
 //code
-
-setInterval(displayDay, dayDur);
-setTimeout(() => {
-    for (let i = 0; i < 11; i++) {
-        setTimeout(() => {
-            addObject(moon);
-        }, 1000 * i);
-    }
-}, 1000);
-
-//
 // addObject(moon);
+window.onload = function () {
+    //code starrts here
+    setInterval(displayDay, dayDur);
+    setTimeout(() => {
+        for (let i = 0; i < 7; i++) {
+            setTimeout(() => {
+                addObject(moon);
+            }, 100 * i);
+        }
+    }, 1000);
+};

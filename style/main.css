@@ -45,9 +45,9 @@ body {
 }
 html,
 body,
-body > *,
-body > *::after,
-body > *::before {
+body *,
+body *::after,
+body *::before {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -140,21 +140,31 @@ input:checked + label.r:after {
 /*  */
 .info {
     position: relative;
-    padding: 10px;
+    margin-left: -10px;
 }
 .info > .container {
-    background-color: red;
-    border: 5px solid white;
-    height: 20dvh;
+    background-color: rgb(12, 12, 12);
+    border-radius: 10px;
+    padding: 1em;
+    margin-inline: 1em;
+    min-height: 20dvh;
     position: absolute;
-    width: 100%;
-    top: -10px;
-    opacity: 0;
+    max-width: 90%;
+    min-width: 90%;
+    top: -6px;
+    left: 50%;
+    translate: -51%;
     pointer-events: none;
+    opacity: 0;
+    transition-property: transform, opacity;
+    transition-duration: 200ms;
+    transform: rotateX(90deg);
+    transform-origin: top;
 }
-info > .container.show {
-    visibility: visible;
+.info.show > .container {
     pointer-events: all;
+    opacity: 1;
+    transform: rotateX(0deg);
 }
 
 /*  */
@@ -162,7 +172,11 @@ info > .container.show {
 /* Main */
 /*  */
 /*  */
+main.info {
+    translate: 0 10dvh;
+}
 main {
+    transition: translate 200ms;
     height: 100%;
     width: 100%;
     display: flex;
